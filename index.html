@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f6f1e8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="おこづかい" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="stylesheet" href="style.css" />
+  <title>おこづかいPWA</title>
+</head>
+<body>
+  <main class="app">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">PWA Demo</p>
+        <h1>おこづかい管理</h1>
+      </div>
+      <button id="settingsBtn" class="ghost">設定</button>
+    </header>
+
+    <section id="mainPage">
+      <section class="status-grid">
+        <div class="status-card accent">
+          <span>残り金額</span>
+          <strong id="remainingAmount">¥0</strong>
+        </div>
+        <div class="status-card">
+          <span>残り日数</span>
+          <strong id="remainingDays">0日</strong>
+        </div>
+        <div class="status-card">
+          <span>未入金合計</span>
+          <strong id="unpaidTotal">¥0</strong>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <h2>入力</h2>
+          <small id="periodLabel"></small>
+        </div>
+        <form id="entryForm">
+          <label>
+            日付
+            <input type="date" id="date" required />
+          </label>
+          <label>
+            種類
+            <select id="status">
+              <option value="unpaid">未入金</option>
+              <option value="paid">入金済み</option>
+            </select>
+          </label>
+          <label>
+            金額
+            <input type="number" id="amount" min="1" inputmode="numeric" placeholder="例: 1200" required />
+          </label>
+          <label>
+            カテゴリ
+            <select id="category">
+              <option selected>未分類</option>
+              <option>食費</option>
+              <option>日用品</option>
+              <option>交通</option>
+              <option>医療</option>
+              <option>趣味</option>
+              <option>ペット</option>
+              <option>服・美容</option>
+              <option>その他</option>
+            </select>
+          </label>
+          <label class="full">
+            メモ
+            <input type="text" id="memo" placeholder="例: コンビニ" />
+          </label>
+          <button type="submit" class="primary">追加する</button>
+        </form>
+      </section>
+
+      <section class="grid">
+        <div class="card">
+          <h2>カテゴリ集計</h2>
+          <div id="categorySummary" class="summary"></div>
+        </div>
+
+        <div class="card">
+          <div class="section-head">
+            <h2>履歴</h2>
+            <button id="exportCsv" class="ghost" type="button">CSV</button>
+          </div>
+          <div id="entries" class="entries"></div>
+        </div>
+      </section>
+    </section>
+
+    <section id="settingsPage" class="hidden">
+      <section class="card">
+        <div class="section-head">
+          <h2>設定</h2>
+          <button id="backBtn" class="ghost">戻る</button>
+        </div>
+        <form id="settingsForm">
+          <label>
+            設定金額
+            <input type="number" id="baseAmount" min="0" inputmode="numeric" required />
+          </label>
+          <label>
+            調整金額
+            <input type="number" id="adjustAmount" inputmode="numeric" />
+          </label>
+          <label class="full">
+            期間
+            <select id="period">
+              <option value="first">1月1日〜6月30日</option>
+              <option value="second">7月1日〜12月31日</option>
+            </select>
+          </label>
+          <p class="hint full">残り金額 = 設定金額 - 使用分 + 調整金額。調整金額は財布との誤差合わせ用です。</p>
+          <button type="submit" class="primary">保存する</button>
+        </form>
+      </section>
+    </section>
+  </main>
+
+  <template id="entryTemplate">
+    <article class="entry">
+      <div>
+        <strong class="entry-main"></strong>
+        <p class="entry-sub"></p>
+      </div>
+      <div class="entry-right">
+        <span class="entry-amount"></span>
+        <button class="mark-paid" type="button">入金済みにする</button>
+        <button class="delete" type="button">削除</button>
+      </div>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>

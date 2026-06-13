@@ -1,0 +1,140 @@
+:root {
+  --bg: #f6f1e8;
+  --card: #fffaf1;
+  --ink: #27211a;
+  --muted: #786f64;
+  --line: #e4d7c6;
+  --accent: #2f6f5e;
+  --danger: #b14836;
+  --shadow: 0 14px 40px rgba(64, 48, 29, .12);
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+.app {
+  width: min(960px, 100%);
+  margin: 0 auto;
+  padding: calc(18px + env(safe-area-inset-top)) 16px 32px;
+}
+.hero {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: end;
+  margin-bottom: 16px;
+}
+.eyebrow { margin: 0 0 4px; color: var(--muted); font-size: 12px; letter-spacing: .12em; }
+h1 { margin: 0; font-size: 34px; }
+h2 { margin: 0 0 14px; font-size: 18px; }
+.month-total {
+  background: var(--ink);
+  color: white;
+  padding: 12px 14px;
+  border-radius: 18px;
+  text-align: right;
+  min-width: 140px;
+}
+.month-total span { display: block; opacity: .75; font-size: 12px; }
+.month-total strong { font-size: 22px; }
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 24px;
+  padding: 18px;
+  box-shadow: var(--shadow);
+  margin-bottom: 16px;
+}
+form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+label { display: grid; gap: 6px; font-size: 13px; color: var(--muted); }
+.full { grid-column: 1 / -1; }
+input, select, button {
+  font: inherit;
+  border-radius: 14px;
+}
+input, select {
+  width: 100%;
+  padding: 13px 12px;
+  border: 1px solid var(--line);
+  background: white;
+  color: var(--ink);
+}
+button {
+  border: 0;
+  padding: 12px 14px;
+  cursor: pointer;
+}
+.primary {
+  grid-column: 1 / -1;
+  background: var(--accent);
+  color: white;
+  font-weight: 700;
+}
+.ghost {
+  background: white;
+  color: var(--accent);
+  border: 1px solid var(--line);
+}
+.grid { display: grid; grid-template-columns: 1fr 1.4fr; gap: 16px; }
+.section-head { display: flex; justify-content: space-between; gap: 10px; align-items: center; margin-bottom: 10px; }
+.section-head h2 { margin: 0; }
+.section-head select { max-width: 150px; padding: 9px; }
+.summary { display: grid; gap: 10px; }
+.summary-row { display: flex; justify-content: space-between; border-bottom: 1px dashed var(--line); padding-bottom: 8px; }
+.entries { display: grid; gap: 10px; }
+.entry {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 12px;
+}
+.entry-main { display: block; }
+.entry-sub { margin: 4px 0 0; color: var(--muted); font-size: 12px; }
+.entry-right { text-align: right; display: grid; gap: 6px; justify-items: end; }
+.entry-amount { font-weight: 800; }
+.entry-amount.income { color: var(--accent); }
+.entry-amount.expense { color: var(--danger); }
+.delete { background: transparent; color: var(--muted); padding: 0; font-size: 12px; }
+.mark-paid { background: #fff4d8; color: #8a5a00; border: 1px solid #f0d18a; padding: 6px 10px; font-size: 12px; font-weight: 700; }
+.empty { color: var(--muted); padding: 12px 0; }
+@media (max-width: 720px) {
+  .grid, form { grid-template-columns: 1fr; }
+  .hero { align-items: stretch; flex-direction: column; }
+  .month-total { text-align: left; }
+}
+.hidden { display: none !important; }
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.status-card {
+  background: #fffaf1;
+  border: 2px solid #315b8a;
+  border-radius: 6px;
+  padding: 12px 14px;
+  box-shadow: var(--shadow);
+}
+.status-card.accent { background: #e9f7fb; }
+.status-card span { display: block; font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+.status-card strong { font-size: 24px; }
+.hint { margin: 0; color: var(--muted); line-height: 1.6; font-size: 13px; }
+.entry-amount.paid { color: var(--danger); }
+.entry-amount.unpaid { color: #b77b00; }
+@media (max-width: 720px) {
+  .status-grid { grid-template-columns: 1fr; }
+  h1 { font-size: 28px; }
+}
