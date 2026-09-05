@@ -1,10 +1,10 @@
-const CACHE_NAME = 'kakeibo-pwa-v3';
+const CACHE_NAME = 'kakeibo-pwa-v4';
 
 const ASSETS = [
   './',
   './index.html',
-  './style.css',
-  './app.js',
+  './style.css?v=20260905-2',
+  './app.js?v=20260905-2',
   './manifest.json',
   './icon-180.png',
   './icon-192.png',
