@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   <meta name="apple-mobile-web-app-title" content="おこづかい" />
   <link rel="manifest" href="manifest.json" />
-  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="apple-touch-icon" href="icon-180.png" />
   <link rel="stylesheet" href="style.css" />
   <title>おこづかいPWA</title>
 </head>
@@ -43,11 +43,13 @@
           <h2>入力</h2>
           <small id="periodLabel"></small>
         </div>
+
         <form id="entryForm">
           <label>
             日付
             <input type="date" id="date" required />
           </label>
+
           <label>
             種類
             <select id="status">
@@ -55,30 +57,38 @@
               <option value="paid">入金済み</option>
             </select>
           </label>
+
           <label>
             金額
-            <input type="number" id="amount" min="1" inputmode="numeric" placeholder="例: 1200" required />
+            <input type="number" id="amount" min="0" inputmode="numeric" placeholder="例: 1200" required />
           </label>
-          <label>
-            カテゴリ
-            <select id="category">
-              <option selected>未分類</option>
-              <option>食費</option>
-              <option>日用品</option>
-              <option>交通</option>
-              <option>医療</option>
-              <option>趣味</option>
-              <option>ペット</option>
-              <option>服・美容</option>
-              <option>その他</option>
-            </select>
-          </label>
+
+          <fieldset class="full category-fieldset">
+            <legend>分類（複数選択可）</legend>
+            <p class="hint">何も選ばなければ未分類になります。</p>
+            <div id="entryCategories" class="check-grid"></div>
+          </fieldset>
+
           <label class="full">
             メモ
-            <input type="text" id="memo" placeholder="例: コンビニ" />
+            <input type="text" id="memo" placeholder="例: イヤホン購入" />
           </label>
+
           <button type="submit" class="primary">追加する</button>
         </form>
+      </section>
+
+      <section class="card filter-card">
+        <div class="section-head">
+          <h2>履歴フィルター</h2>
+          <label class="switch-label">
+            <input type="checkbox" id="filterEnabled" />
+            <span>フィルターON</span>
+          </label>
+        </div>
+        <p class="hint">複数選択時は「どれか1つに該当」で表示します。同じ履歴が複数分類に該当しても合計は1回だけです。</p>
+        <div id="filterCategories" class="check-grid"></div>
+        <button id="clearFilter" class="ghost compact" type="button">選択を解除</button>
       </section>
 
       <section class="grid">
@@ -90,7 +100,12 @@
         <div class="card">
           <div class="section-head">
             <h2>履歴</h2>
-            <button id="exportCsv" class="ghost" type="button">CSV</button>
+            <div class="button-row">
+              <button id="exportCsv" class="ghost compact" type="button">CSV</button>
+              <button id="exportBackup" class="ghost compact" type="button">バックアップ</button>
+              <button id="importBackupBtn" class="ghost compact" type="button">復元</button>
+              <input id="importBackupFile" class="hidden" type="file" accept=".json,application/json" />
+            </div>
           </div>
           <div id="entries" class="entries"></div>
         </div>
@@ -128,17 +143,67 @@
 
   <template id="entryTemplate">
     <article class="entry">
-      <div>
+      <div class="entry-left">
         <strong class="entry-main"></strong>
         <p class="entry-sub"></p>
       </div>
       <div class="entry-right">
         <span class="entry-amount"></span>
-        <button class="mark-paid" type="button">入金済みにする</button>
-        <button class="delete" type="button">削除</button>
+        <div class="entry-actions">
+          <button class="edit ghost compact" type="button">編集</button>
+          <button class="mark-paid compact" type="button">入金済みにする</button>
+          <button class="delete compact" type="button">削除</button>
+        </div>
       </div>
     </article>
   </template>
+
+  <div id="editModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="editTitle">
+    <div class="modal-panel">
+      <div class="section-head">
+        <h2 id="editTitle">履歴を編集</h2>
+        <button id="editCancelTop" class="ghost compact" type="button">閉じる</button>
+      </div>
+
+      <form id="editForm">
+        <input type="hidden" id="editId" />
+
+        <label>
+          日付
+          <input type="date" id="editDate" required />
+        </label>
+
+        <label>
+          種類
+          <select id="editStatus">
+            <option value="unpaid">未入金</option>
+            <option value="paid">入金済み</option>
+          </select>
+        </label>
+
+        <label>
+          金額
+          <input type="number" id="editAmount" min="0" inputmode="numeric" required />
+        </label>
+
+        <fieldset class="full category-fieldset">
+          <legend>分類（複数選択可）</legend>
+          <p class="hint">何も選ばなければ未分類になります。</p>
+          <div id="editCategories" class="check-grid"></div>
+        </fieldset>
+
+        <label class="full">
+          メモ
+          <input type="text" id="editMemo" />
+        </label>
+
+        <div class="modal-actions full">
+          <button id="editCancel" class="ghost" type="button">キャンセル</button>
+          <button class="primary modal-save" type="submit">変更を保存</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <script src="app.js"></script>
 </body>
